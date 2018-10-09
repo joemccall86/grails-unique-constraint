@@ -9,11 +9,14 @@ import spock.lang.Specification
 class ChannelIntegrationSpec extends Specification {
 
     void "test something"() {
-        given: 'an existing channel'
-        def defaultChannel = new DefaultChannel(name: 'General').save(failOnError: true)
+        given: 'a test organization'
+        def testOrg = new Organization(name: 'Test 1').save(failOnError: true)
+
+        and: 'an existing channel'
+        def defaultChannel = new DefaultChannel(organization: testOrg, name: 'General').save(failOnError: true)
 
         when: 'a new channel with the same name is created'
-        def listChannel = new ListChannel(name: defaultChannel.name)
+        def listChannel = new ListChannel(name: defaultChannel.name, organization: testOrg)
 
         then:
         !listChannel.validate()
